@@ -26,9 +26,9 @@ namespace ReactChatApp.Services
             return chatMessage;
         }
 
-        public async Task<IEnumerable<ChatMessage>> GetAllInitially()
+        public Task<IEnumerable<ChatMessage>> GetAllInitially()
         {
-            return await _repository.GetTopMessages(100);
+            return _repository.GetTopMessages(100);
         }
     }
 }

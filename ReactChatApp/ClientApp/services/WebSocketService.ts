@@ -1,46 +1,33 @@
-﻿/*import { HubConnection, TransportType, ConsoleLogger, LogLevel } from '@aspnet/signalr';
-
+﻿import * as signalR from "@aspnet/signalr";
 import { ChatMessage } from './Models/ChatMessage';
+import { User } from "./Models/User";
 
 class ChatWebsocketService {
-
-    private _connection: HubConnection;
+    private _connection: signalR.HubConnection;
 
     constructor() {
-        var transport = TransportType.WebSockets;
-
-        let logger = new ConsoleLogger(LogLevel.Information);
-
-        // create Connection
-        this._connection = new HubConnection(`http://${document.location.host}/chat`,
-            { transport: transport, logging: logger });
-
-        // start connection
+        this._connection = new signalR.HubConnectionBuilder()
+            .withUrl("/chat")
+            .build();
         this._connection.start().catch(err => console.error(err, 'red'));
     }
 
-    registerUserLoggedOn(userLoggedOn: (id: number, name: string) => void) {
-        // get new user from the server
-        this._connection.on('UserLoggedOn', (id: number, name: string) => {
-
-            userLoggedOn(id, name);
+    registerUserLoggedOn(userLoggedOn: (user: User) => void) {
+        this._connection.on('UserLoggedOn', (user: User) => {
+            userLoggedOn(user);
         });
     }
 
     registerMessageAdded(messageAdded: (msg: ChatMessage) => void) {
-        // get nre chat message from the server
         this._connection.on('MessageAdded', (message: ChatMessage) => {
-
             messageAdded(message);
         });
     }
 
     sendMessage(message: string) {
-        // send the chat message to the server
         this._connection.invoke('AddMessage', message);
     }
 }
 
 const WebsocketService = new ChatWebsocketService();
-
-export default WebsocketService;*/
+export default WebsocketService;

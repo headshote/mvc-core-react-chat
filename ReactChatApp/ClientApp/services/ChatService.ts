@@ -1,6 +1,4 @@
-﻿/*import 'isomorphic-fetch';
-
-import WebsocketService from './WebsocketService';
+﻿import WebsocketService from './WebsocketService';
 import { ChatMessage } from '../services/Models/ChatMessage';
 
 export class ChatService {
@@ -8,8 +6,7 @@ export class ChatService {
 
     constructor(messageAdded: any) {
         this._messageAdded = messageAdded;
-
-        // Chat-Nachrichten vom Server empfangen
+        
         WebsocketService.registerMessageAdded((message: ChatMessage) => {
             this._messageAdded(message);
         });
@@ -26,4 +23,4 @@ export class ChatService {
                 fetchInitialMessagesCallback(data);
             });
     }
-}*/
+}

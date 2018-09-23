@@ -16,13 +16,12 @@ namespace ReactChatApp.Hubs
             _chatService = chatService;
         }
 
-        public void AddMessage(string message)
+        public async Task AddMessage(string message)
         {
             var username = Context.User.Identity.Name;
-            var chatMessage = _chatService.CreateNewMessage(username, message);
-            // Call the MessageAdded method to update clients.
-            //Clients.All.InvokeAsync("MessageAdded", chatMessage);
-        }
+            var chatMessage = await _chatService.CreateNewMessage(username, message);
 
+            await Clients.All.SendAsync("MessageAdded", chatMessage);
+        }
     }
 }

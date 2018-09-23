@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ReactChatApp.Hubs;
+using ReactChatApp.Services;
 
 namespace ReactChatApp
 {
@@ -16,14 +18,16 @@ namespace ReactChatApp
         {
             Configuration = configuration;
         }
-
+        
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddSignalRCore();
+            services.AddSignalR();
+            services.AddTransient<IChatMessageRepository, ChatMessageRepository>();
+            services.AddTransient<IChatService, ChatService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +48,12 @@ namespace ReactChatApp
             }
 
             app.UseStaticFiles();
+            app.UseCookiePolicy();
+
+            app.UseSignalR(options =>
+            {
+                options.MapHub<ChatHub>("/chat");
+            });
 
             app.UseMvc(routes =>
             {
