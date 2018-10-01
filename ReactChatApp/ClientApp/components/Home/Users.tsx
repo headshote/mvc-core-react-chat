@@ -1,5 +1,5 @@
-﻿// components/Home/Users.tsx
-import * as React from 'react';
+﻿import * as React from 'react';
+import { UsersService } from '../../services/UsersService';
 
 interface UsersState {
     users: User[];
@@ -11,41 +11,45 @@ interface User {
 }
 
 export class Users extends React.Component<{}, UsersState> {
+    private userService: UsersService = new UsersService(this.handleOnSocket);
+
     constructor() {
         super();
 
         this.state = {
-            users: [
-
-                { id: 1, name: 'juergen' },
-
-                { id: 3, name: 'marion' },
-
-                { id: 2, name: 'peter' },
-
-                { id: 4, name: 'mo' }]
+            users: []
         };
+
+        this.handleOnSocket = this.handleOnSocket.bind(this);
+        this.handleOnLogedOnUserFetched = this.handleOnLogedOnUserFetched.bind(this);
+
+        this.userService.fetchLogedOnUsers(this.handleOnLogedOnUserFetched); 
     }
 
     public render() {
         return <div className='panel panel-default'>
-
             <div className='panel-body'>
-
                 <h3>Users online:</h3>
-
                 <ul className='chat-users'>
-
                     {this.state.users.map(user =>
-
                         <li key={user.id}>{user.name}</li>
-
                     )}
-
                 </ul>
-
             </div>
-
         </div>;
+    }
+
+    handleOnLogedOnUserFetched(users: User[]) {
+        this.setState({
+            users: users
+        });
+    }
+
+    handleOnSocket(user: User) {
+        let users = this.state.users;
+        users.push(user);
+        this.setState({
+            users: users
+        });
     }
 }

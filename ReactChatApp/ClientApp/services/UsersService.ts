@@ -1,6 +1,4 @@
-﻿/*import 'isomorphic-fetch';
-
-import WebsocketService from './WebsocketService'
+﻿import WebsocketService from './WebsocketService'
 import { User } from '../services/Models/User';
 
 export class UsersService {
@@ -9,7 +7,6 @@ export class UsersService {
     constructor(socketCallback: (user: User) => void) {
         this._userLoggedOn = socketCallback;
 
-        // Chat-Nachrichten vom Server empfangen
         WebsocketService.registerUserLoggedOn((user: User) => {
             this._userLoggedOn(user);
         });
@@ -22,4 +19,4 @@ export class UsersService {
                 fetchUsersCallback(data);
             });
     }
-}*/
+}
