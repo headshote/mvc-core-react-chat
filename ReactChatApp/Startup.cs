@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReactChatApp.Hubs;
 using ReactChatApp.Services;
+using ReactChatApp.Services.Users;
 
 namespace ReactChatApp
 {
@@ -26,6 +27,7 @@ namespace ReactChatApp
         {
             services.AddMvc();
             services.AddSignalR();
+            services.AddSingleton<IUserTracker, UserTracker>();
             services.AddTransient<IChatMessageRepository, ChatMessageRepository>();
             services.AddTransient<IChatService, ChatService>();
         }
