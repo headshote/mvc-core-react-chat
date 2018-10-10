@@ -49,7 +49,7 @@ namespace ReactChatAppIdentity
             app.UseIdentityServer();
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
-            app.UseAuthentication();
+            //app.UseAuthentication();
         }
     }
 }

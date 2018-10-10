@@ -4,11 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReactChatApp.Services.Users;
 
 namespace ReactChatApp.Controllers
 {
+    //[Authorize]
     public class HomeController : Controller
     {
         private readonly IUserTracker _userTracker;

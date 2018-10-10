@@ -12,7 +12,7 @@ namespace ReactChatAppIdentity
         {
             return new List<ApiResource>
         {
-            new ApiResource("reactchat", "React Chat Demo")
+            new ApiResource("reactchat", "React Chat App")
         };
         }
 
