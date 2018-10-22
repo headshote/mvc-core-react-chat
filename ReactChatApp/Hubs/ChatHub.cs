@@ -39,5 +39,16 @@ namespace ReactChatApp.Hubs
         {
             await Clients.All.SendAsync("UsersLeft", user);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if(disposing)
+            {
+                _userTracker.UserJoined -= OnUsersJoined;
+                _userTracker.UserLeft -= OnUsersLeft;
+            }
+        }
     }
 }
