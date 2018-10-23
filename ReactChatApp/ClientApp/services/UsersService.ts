@@ -1,5 +1,6 @@
 ﻿import WebsocketService from './WebsocketService'
 import { User } from '../services/Models/User';
+import "isomorphic-fetch";
 
 export class UsersService {
     private _userLoggedOn: (user: User) => void;

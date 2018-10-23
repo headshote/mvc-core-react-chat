@@ -11,7 +11,9 @@ interface User {
 }
 
 export class Users extends React.Component<{}, UsersState> {
-    private userService: UsersService = new UsersService(this.handleOnSocket);
+    private userService: UsersService = new UsersService((user: User) => {
+        this.handleOnSocket(this, user)
+    });
 
     constructor() {
         super();
@@ -45,10 +47,10 @@ export class Users extends React.Component<{}, UsersState> {
         });
     }
 
-    handleOnSocket(user: User) {
-        let users = this.state.users;
+    handleOnSocket(that:Users, user: User) {
+        let users = that.state.users;
         users.push(user);
-        this.setState({
+        that.setState({
             users: users
         });
     }

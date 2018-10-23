@@ -1,5 +1,6 @@
 ﻿import WebsocketService from './WebsocketService';
 import { ChatMessage } from '../services/Models/ChatMessage';
+import "isomorphic-fetch";
 
 export class ChatService {
     private _messageAdded: any;

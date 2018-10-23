@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using ReactChatApp.Areas.Identity.Data;
 using ReactChatApp.Models;
 using ReactChatApp.Services;
 using ReactChatApp.Services.Users;
@@ -13,13 +16,39 @@ namespace ReactChatApp.Hubs
     {
         private readonly IChatService _chatService;
         private readonly IUserTracker _userTracker;
+        private readonly UserManager<ReactChatAppUser> _userManager;
 
-        public ChatHub(IChatService chatService, IUserTracker userTracker)
+        public ChatHub(IChatService chatService,
+            IUserTracker userTracker,
+            UserManager<ReactChatAppUser> userManager)
         {
             _chatService = chatService;
             _userTracker = userTracker;
+            _userManager = userManager;
             _userTracker.UserJoined += OnUsersJoined;
             _userTracker.UserLeft += OnUsersLeft;
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            var user = Context.User?.Identity as ClaimsIdentity;
+            if (user != null && user.IsAuthenticated)
+            {
+                _userTracker.AddUser(_userManager.GetUserId(Context.User), user.Name);
+            }
+
+            return base.OnConnectedAsync();
+        }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            var user = Context.User?.Identity as ClaimsIdentity;
+            if (user != null && user.IsAuthenticated)
+            {
+                _userTracker.RemoveUser(_userManager.GetUserId(Context.User));
+            }
+
+            return base.OnDisconnectedAsync(exception);
         }
 
         public async Task AddMessage(string message)

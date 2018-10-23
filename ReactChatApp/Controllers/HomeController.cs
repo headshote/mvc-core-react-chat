@@ -15,23 +15,14 @@ namespace ReactChatApp.Controllers
     public class HomeController : Controller
     {
         private readonly IUserTracker _userTracker;
-        private readonly UserManager<ReactChatAppUser> _userManager;
 
-        public HomeController(IUserTracker userTracker,
-            UserManager<ReactChatAppUser> userManager)
+        public HomeController(IUserTracker userTracker)
         {
             _userTracker = userTracker;
-            _userManager = userManager;
         }
 
         public IActionResult Index()
         {
-            var user = HttpContext.User?.Identity as ClaimsIdentity;
-            if (user != null && user.IsAuthenticated)
-            {
-                _userTracker.AddUser(_userManager.GetUserId(User), user.Name);
-            }
-
             return View();
         }
 

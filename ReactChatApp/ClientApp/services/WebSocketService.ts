@@ -13,7 +13,7 @@ class ChatWebsocketService {
     }
 
     registerUserLoggedOn(userLoggedOn: (user: User) => void) {
-        this._connection.on('UserLoggedOn', (user: User) => {
+        this._connection.on('UsersJoined', (user: User) => {
             userLoggedOn(user);
         });
     }
